@@ -1,16 +1,16 @@
 var Q = require('q')
 
-var giveIou = function(amt, t){
-  var deferred = Q.defer();
-  
-  setTimeout(function(){
-    deferred.resolve(amt);
-  },
-  t);
-  
-  return deferred.promise;
+var giveIou = require('./lib/iou.js');
+
+//refactor to create function for giving Ious to people
+function giveIouTo(name, iou){
+  iou.then( function(iouAmt){
+    console.log('' + name + 'Paid!!  $', iouAmt);
+  });
 }
 
+giveIouTo('Carl', giveIou(30, 3000));
+giveIouTo('Dave', giveIou(40, 4000));
 var iouToAlex = giveIou(10, 1000);
 
 var iouToBeth = giveIou(20, 2000);
