@@ -1,6 +1,15 @@
 var Q = require('q')
 
-var giveIou = require('./lib/iou.js');
+var giveIou = function(amt, t){
+  var deferred = Q.defer();
+  
+  setTimeout(function(){
+    deferred.resolve(amt);
+  },
+  t);
+  
+  return deferred.promise;
+}
 
 var iouToAlex = giveIou(10, 1000);
 
