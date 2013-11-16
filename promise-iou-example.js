@@ -1,12 +1,8 @@
 var Q = require('q')
 
-var giveIou = require('./lib/iou.js');
+var giveIou = require('./lib/iou.js').giveIou;
+var giveIouTo = require('./lib/iou.js').giveIouTo;
 
-function giveIouTo(name, iou){
-  iou.then( function(iouAmt){
-    console.log('' + name + 'Paid!!  $', iouAmt);
-  });
-}
 
 giveIouTo('Alex', giveIou(10, 1000));
 giveIouTo('Beth', giveIou(20, 2000));

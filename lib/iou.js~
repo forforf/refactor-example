@@ -11,17 +11,9 @@ var giveIou = function(amt, t){
   return deferred.promise;
 }
 
-var iouToAlex = giveIou(10, 1000);
+var iou = {
+  giveIou: giveIou,
+  giveIouTo: giveIouTo
 
-var iouToBeth = giveIou(20, 2000);
-
-iouToAlex.then( function(iouAmt){ 
-  console.log('Alex Paid!!  $', iouAmt);
-});
-
-iouToBeth.then ( function(iouAmt){
-  console.log('Beth Paid!!  $', iouAmt);
-});  
-
-
+module.exports = iou;
 
