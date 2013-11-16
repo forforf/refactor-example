@@ -1,0 +1,8 @@
+{
+  "name": "promise-iou",
+  "version": "0.0.1",
+  "description": "walkthrough of promises using IOUs and refactoring using git tags",
+  "dependencies": {
+    "q": "*"
+  }
+}
