@@ -1,30 +1,17 @@
-var Q = require('q')
+// we actually didn't need once iou was moved to its own lib
+//var Q = require('q')
 
 var giveIou = require('./lib/iou.js').giveIou;
 var giveIouTo = require('./lib/iou.js').giveIouTo;
-
-//Lets make an account a function with a method for deducting
-//and use it to track our money.
-function Acct(name, initialDeposit){
-  var balance = initialDeposit;
-  this.name = function(){ return name };
-  this.balance = function(){ return balance };
-  this.withdraw = function(amt) {
-    balance = balance - amt;
-    console.log('Balance for', name, 'is $', balance);
-    return balance;
-  }
-}  
+var Acct = require('./lib/acct.js');
+  
 var myAcct = new Acct('me', 10000);
 
 console.log('My Acct started with: $', myAcct.balance());
 
 // note that the function invoked by then takes the iouAmt parameter
 giveIouTo('Alex', giveIou(10, 1000))
-  .then( function(iouAmt){
-    myAcct.withdraw(iouAmt);
-    console.log('My Acct: $', myAcct.balance());
-  })
+  .then( myAcct.withdraw )
 ;
 
 // lets replace it with the withdraw method from Acct class

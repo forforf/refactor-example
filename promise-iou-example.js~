@@ -22,7 +22,7 @@ console.log('My Acct started with: $', myAcct.balance());
 // note that the function invoked by then takes the iouAmt parameter
 giveIouTo('Alex', giveIou(10, 1000))
   .then( function(iouAmt){
-    myAcct.withdrwaw(iouAmt);
+    myAcct.withdraw(iouAmt);
     console.log('My Acct: $', myAcct.balance());
   })
 ;
