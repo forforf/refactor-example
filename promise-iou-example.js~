@@ -3,17 +3,45 @@ var Q = require('q')
 var giveIou = require('./lib/iou.js').giveIou;
 var giveIouTo = require('./lib/iou.js').giveIouTo;
 
+//our money shouldn't be infinite
+var myAcct = 10000;
+console.log('My Acct started with: $', myAcct);
 
-giveIouTo('Alex', giveIou(10, 1000));
-giveIouTo('Beth', giveIou(20, 2000));
-giveIouTo('Carl', giveIou(30, 3000));
-
-//giveIouTo now returns the iou promise and can be used
+//and we should deduct when we pay an IOU
+giveIouTo('Alex', giveIou(10, 1000))
+  .then( function(iouAmt){
+    myAcct = myAcct - iouAmt;
+    console.log('My Acct: $', myAcct);
+  })
+;
+giveIouTo('Beth', giveIou(20, 2000))
+  .then( function(iouAmt){
+    myAcct = myAcct - iouAmt;
+    console.log('My Acct: $', myAcct);
+  })
+;
+giveIouTo('Carl', giveIou(30, 3000))
+  .then( function(iouAmt){
+    myAcct = myAcct - iouAmt;
+    console.log('My Acct: $', myAcct);
+  })
+;
 giveIouTo('Dave', giveIou(40, 4000))
   .then( function(iouAmt){
     console.log('Thanks Dave, your $', iouAmt, ' really got me out of a jam');
-  )}
+  }) 
+// You can't do this!   
+//  .then( function(iouAmt){
+//    console.log(myAcct, iouAmt);
+//    myAcct = myAcct - iouAmt;
+//    console.log('My Acct: $', myAcct);
+//  })
 ;  
+giveIouTo('Dave', giveIou(40, 4000))
+  .then( function(iouAmt){
+    myAcct = myAcct - iouAmt;
+    console.log('My Acct: $', myAcct);
+  })
 
 
 
