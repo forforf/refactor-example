@@ -1,47 +1,41 @@
-var Q = require('q')
-
 var giveIou = require('./lib/iou.js').giveIou;
 var giveIouTo = require('./lib/iou.js').giveIouTo;
-
-//Lets make an account a function with a method for deducting
-//and use it to track our money.
-function Acct(name, initialDeposit){
-  var balance = initialDeposit;
-  this.name = function(){ return name };
-  this.balance = function(){ return balance };
-  this.withdraw = function(amt) {
-    balance = balance - amt;
-    console.log('Balance for', name, 'is $', balance);
-    return balance;
-  }
-}  
+var Acct = require('./lib/acct.js');
+  
 var myAcct = new Acct('me', 10000);
 
-console.log('My Acct started with: $', myAcct.balance());
+//lets move this to Acct's constructor rather than main
+//console.log('My Acct started with: $', myAcct.balance());
 
-// note that the function invoked by then takes the iouAmt parameter
-giveIouTo('Alex', giveIou(10, 1000))
-  .then( function(iouAmt){
-    myAcct.withdraw(iouAmt);
-    console.log('My Acct: $', myAcct.balance());
-  })
-;
 
-// lets replace it with the withdraw method from Acct class
-giveIouTo('Beth', giveIou(20, 2000))
-  .then( myAcct.withdraw )
-;
+// We could almost interate over Alex, Beth, Carl and Dave
+// and insert their names into the giveIouTo function's first arg
+// If not for the special message for Dave
 
-giveIouTo('Carl', giveIou(30, 3000))
-  .then( myAcct.withdraw )
-;
+// however, lets create a map of names to thennable functions
+// and iterate over that to simplify things
 
-giveIouTo('Dave', giveIou(40, 4000))
-  .then( function(iouAmt){
-    console.log('Thanks Dave, your $', iouAmt, ' really got me out of a jam');
-  }) 
-;  
-giveIouTo('Dave', giveIou(40, 4000))
-  .then( myAcct.withdraw )
-;  
+//and a generic thank you function, but it has to accept the amt parameter
+function thanks(iouAmt){
+  console.log('Thank you sir/madam for your loan of  $', iouAmt, ' kind regards');
+}  
+
+var myIous = {
+  Alex: {amt: 10, dur: 1000, whenPaid: [myAcct.withdraw]},
+  Beth: {amt: 20, dur: 2000, whenPaid: [myAcct.withdraw]},
+  Carl: {amt: 30, dur: 3000, whenPaid: [myAcct.withdraw]},
+  Dave: {amt: 40, dur: 4000, whenPaid: [myAcct.withdraw, thanks]}
+}
+
+Object.keys(myIous).forEach(function(name){
+  var iou = giveIouTo(name, giveIou(myIous[name].amt, myIous[name].dur))
+  
+  myIous[name].whenPaid.forEach(function(payFunction){
+    iou.then(payFunction);
+  });
+});
+
+
+
+
 

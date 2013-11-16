@@ -1,29 +1,16 @@
-var Q = require('q')
-
-var giveIou = function(amt, t){
-  var deferred = Q.defer();
-  
-  setTimeout(function(){
-    deferred.resolve(amt);
-  },
-  t);
-  
-  return deferred.promise;
+//Lets make an account a function with a method for deducting
+//and use it to track our money.
+function Acct(name, initialDeposit){
+  console.log('Hello ', name, 'your account stated with: $', myAcct.balance());
+  var balance = initialDeposit;
+  this.name = function(){ return name };
+  this.balance = function(){ return balance };
+  this.withdraw = function(amt) {
+    balance = balance - amt;
+    console.log('Balance for', name, 'is $', balance);
+    return balance;
+  }
 }
 
-function giveIouTo(name, iou){
-  iou.then( function(iouAmt){
-    console.log('' + name + 'Paid!!  $', iouAmt);
-  });
-  
-  //lets return the iou and see what interesting things can happen
-  return iou;
-}
-
-var iou = {
-  giveIou: giveIou,
-  giveIouTo: giveIouTo
-}
-
-module.exports = iou;
+module.exports = Acct;
 
