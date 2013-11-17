@@ -1,8 +1,9 @@
 //Lets make an account a function with a method for deducting
 //and use it to track our money.
 function Acct(name, initialDeposit){
-  console.log('Hello ', name, 'your account stated with: $', myAcct.balance());
   var balance = initialDeposit;
+  console.log('Hello ', name, 'your account stated with: $', balance);
+
   this.name = function(){ return name };
   this.balance = function(){ return balance };
   this.withdraw = function(amt) {
