@@ -21,7 +21,7 @@ function Iou(recipient, amt, dur, whenPaids) {
 
   //this works, but it has issues to address  
   this.give = function(){
-    return giveIouTo( self.recipient(), giveIou(self.amt(), self.duration()));
+    return giveIouTo( _this.recipient(), giveIou(_this.amt(), _this.duration()));
   }
   
   this.whenPaidFn = function(){
