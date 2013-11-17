@@ -26,7 +26,7 @@ var myIous = [
 
 //We can simplify by passing the function rathern than invoking it
 myIous.forEach(function(iou){
-  iou.give().then(iou.whenPaidFn()});
+  iou.give().then(iou.whenPaidFn());
 });
 
 
