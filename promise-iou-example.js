@@ -1,36 +1,11 @@
-var giveIou = require('./lib/iou.js').giveIou;
-var giveIouTo = require('./lib/iou.js').giveIouTo;
+var Iou = require('./lib/iou.js');
 var Acct = require('./lib/acct.js');
   
 var myAcct = new Acct('me', 10000);
 
-// What if we create a IouRecipient Class?
+//Iou class exported to iou lib
 
-function Iou(recipient, amt, dur, whenPaids) {
-  var _this = this; //handle for this object when created
-
-  this.payFuncs = whenPaids;
-  this.recipient = function(){ return recipient; };
-  this.amt = function(){ return amt; };
-  this.duration = function(){ return dur; };
-
-  //this works, but it has issues to address  
-  this.give = function(){
-    return giveIouTo( _this.recipient(), giveIou(_this.amt(), _this.duration()));
-  }
-  
-  this.whenPaidFn = function(){
-    var whenPaid = function(iouAmt){
-      _this.payFuncs.forEach( function(payFunc) {
-        // allows us to pass self-referencing object to whenPaids
-        payFunc(iouAmt, _this);
-      });
-    };
-    return whenPaid;
-  }
-}
-
-//now we can customize the thanks fn
+//customized thanks function
 function thanks(iouAmt, iou){
   console.log('Thanks', iou.recipient(), 'for your loan of  $', iouAmt);
 }  
@@ -39,7 +14,9 @@ function jamMsg(){
   console.log('It got me out of a real Jam');
 }
 
-//myAcct.withdraw still works, because we kept the iouAmt the first arg
+// we can get rid of the array by giving the IOU when creating it
+
+
 var myIous = [
   new Iou('Alex', 10, 1000, [myAcct.withdraw]),
   new Iou('Beth', 20, 2000, [myAcct.withdraw]),
@@ -47,11 +24,9 @@ var myIous = [
   new Iou('Dave', 40, 4000, [myAcct.withdraw, thanks, jamMsg])
 ]
 
-//This takes the place of listing each person individually
+//We can simplify by passing the function rathern than invoking it
 myIous.forEach(function(iou){
-  iou.give().then(function(amt){
-    iou.whenPaidFn()(amt);
-  });
+  iou.give().then(iou.whenPaidFn());
 });
 
 

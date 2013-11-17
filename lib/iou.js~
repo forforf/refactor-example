@@ -15,6 +15,9 @@ function giveIouTo(name, iou){
   iou.then( function(iouAmt){
     console.log('' + name + 'Paid!!  $', iouAmt);
   });
+  
+  //lets return the iou and see what interesting things can happen
+  return iou;
 }
 
 var iou = {
