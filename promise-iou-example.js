@@ -4,20 +4,6 @@ var Acct = require('./lib/acct.js');
   
 var myAcct = new Acct('me', 10000);
 
-// Ok, this is much more concise, but there are two issues
-//   1) readability is pretty bad
-//   2) We lost our individualized thanks.
-
-//Object.keys(myIous).forEach(function(name){
-//  var iou = giveIouTo(name, giveIou(myIous[name].amt, myIous[name].dur))
-
-//  myIous[name].whenPaid.forEach(function(payFunction){
-//    iou.then(payFunction);
-//  });
-//});
-
-// Is there a way to fix this?
-
 // What if we create a IouRecipient Class?
 
 function Iou(recipient, amt, dur, whenPaids) {
